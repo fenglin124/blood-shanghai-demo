@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>上海1937：街巷血战 Demo</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <div>
+        <p class="kicker">ORIGINAL RAIL-SHOOTER VERTICAL SLICE</p>
+        <h1>上海1937：街巷血战</h1>
+      </div>
+      <div class="top-actions">
+        <button id="pauseBtn" type="button">暂停</button>
+        <button id="restartBtn" type="button">重开</button>
+      </div>
+    </header>
+
+    <section class="stage-wrap">
+      <canvas id="game" width="1280" height="720" aria-label="轨道式射击游戏画面"></canvas>
+
+      <div class="weapon-rack" aria-label="武器栏">
+        <button data-weapon="pistol" class="active"><b>1</b><span>手枪</span></button>
+        <button data-weapon="smg"><b>2</b><span>冲锋枪</span></button>
+        <button data-weapon="rifle"><b>3</b><span>步枪</span></button>
+        <button data-weapon="sniper"><b>4</b><span>狙击枪</span></button>
+        <button data-weapon="lmg"><b>5</b><span>轻机枪</span></button>
+        <button data-weapon="hmg"><b>6</b><span>重机枪</span></button>
+        <button data-weapon="grenade"><b>7</b><span>手雷</span></button>
+      </div>
+
+      <div class="hud score-hud">
+        <span>SCORE</span><strong id="score">000000</strong>
+      </div>
+
+      <div class="hud chapter-hud">
+        <span id="chapterText">第一章</span>
+        <strong id="missionText">守住南京路街口</strong>
+      </div>
+
+      <div class="retro-hud">
+        <div class="life-box">
+          <div class="portrait">沪</div>
+          <div>
+            <span>生命</span>
+            <div id="hearts" class="hearts"></div>
+          </div>
+        </div>
+        <div class="kill-box">
+          <span class="skull">☠</span>
+          <strong id="killCount">0</strong>
+        </div>
+        <div class="ammo-box">
+          <span id="weaponName">半自动手枪</span>
+          <strong id="ammoText">8 / ∞</strong>
+          <div class="ammo-ticks" id="ammoTicks"></div>
+        </div>
+      </div>
+
+      <div class="briefing-strip">
+        <span id="briefingText">敌军正在向街口推进。压制街面目标，优先消灭屋顶和窗口火力点。</span>
+      </div>
+
+      <div class="combo-box" id="comboBox">
+        <span>连杀</span><strong id="combo">0</strong>
+      </div>
+
+      <div id="centerBanner" class="center-banner">
+        <span>第一战斗点</span>
+        <strong>南京路街口</strong>
+      </div>
+
+      <div id="hitMarker" class="hit-marker">×</div>
+      <div id="damageVignette" class="damage-vignette"></div>
+      <div id="railTransition" class="rail-transition"><span>前进中…</span></div>
+
+      <section id="startScreen" class="overlay show">
+        <div class="panel start-panel">
+          <p class="kicker">1937 · SHANGHAI</p>
+          <h2>第一章：街巷血战</h2>
+          <p>沿固定路线穿过南京路、石库门巷道与桥头阵地。每清理一个战斗点，镜头会自动推进到下一处区域。</p>
+          <div class="mission-card">
+            <b>任务简报</b>
+            <span>阻止敌军穿过商业街，摧毁桥头重火力点，并击败最后的指挥官。</span>
+          </div>
+          <div class="controls-grid">
+            <div><b>鼠标</b><span>瞄准</span></div>
+            <div><b>左键</b><span>射击</span></div>
+            <div><b>R / 空格</b><span>换弹</span></div>
+            <div><b>1 - 7</b><span>切换武器</span></div>
+            <div><b>Esc</b><span>暂停</span></div>
+            <div><b>爆头</b><span>高额奖励</span></div>
+          </div>
+          <button id="startBtn" class="primary" type="button">进入战斗</button>
+        </div>
+      </section>
+
+      <section id="pauseScreen" class="overlay">
+        <div class="panel compact">
+          <p class="kicker">PAUSED</p>
+          <h2>战斗暂停</h2>
+          <button id="resumeBtn" class="primary" type="button">继续</button>
+        </div>
+      </section>
+
+      <section id="resultScreen" class="overlay">
+        <div class="panel result-panel">
+          <p class="kicker">MISSION COMPLETE</p>
+          <h2 id="resultTitle">路线已打通</h2>
+          <div class="grade" id="grade">S</div>
+          <div class="result-grid">
+            <div><span>击杀</span><strong id="rKills">0</strong></div>
+            <div><span>爆头</span><strong id="rHeadshots">0</strong></div>
+            <div><span>命中率</span><strong id="rAccuracy">0%</strong></div>
+            <div><span>最高连杀</span><strong id="rCombo">0</strong></div>
+            <div><span>最终得分</span><strong id="rScore">0</strong></div>
+            <div><span>用时</span><strong id="rTime">00:00</strong></div>
+          </div>
+          <button id="playAgainBtn" class="primary" type="button">重新挑战</button>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer-note">
+      <span>本版本采用原创代码与原创图形，保留老式国产轨道射击的节奏感。</span>
+      <span>未使用原作贴图、模型、音频或程序代码。</span>
+    </footer>
+  </main>
+
+  <script src="./game.js"></script>
+</body>
+</html>
